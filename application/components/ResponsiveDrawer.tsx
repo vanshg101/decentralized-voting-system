@@ -40,30 +40,34 @@ const ResponsiveDrawer = (props: PropsType) => {
     return (<Box sx={{ display: 'flex' }}>\
         <CssBaseline />
         <AppBar
-            position="fixed"
-            sx={{
-                pt: 2,
-                pl: 10,
-                pr: 10,
-                boxShadow: 'none',
-                width: { sm: `calc(100% - ${drawerWidth}px)` },
-                ml: { sm: `${drawerWidth}px` },
-            }}
+    position="fixed"
+    sx={{
+        pt: 2,
+        pl: 10,
+        pr: 10,
+        boxShadow: 'none',
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+       // Adding rounded corners for a smooth border
+        border: '1px solid rgba(255, 255, 255, 0.2)', // Optional: subtle border for added smoothness
+    }}
+>
+    <Toolbar>
+        <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
         >
-            <Toolbar>
+            <MenuIcon />
+        </IconButton>
+    </Toolbar>
+    <Typography variant='h3' sx={{ pb: 3, color: 'orange', fontWeight: 'bold', textAlign: 'center' }}>
+        Decentralized Voting System
+    </Typography>
+</AppBar>
 
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: 'none' } }}
-                >
-                    <MenuIcon />
-                </IconButton>
-            </Toolbar>
-            <Typography variant='h3' sx={{ pb: 3, color: 'orange', fontWeight: 'bold', textAlign: 'center' }}>Decentralized Voting System</Typography>
-        </AppBar>
         <Box
             component="nav"
             sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}

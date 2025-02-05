@@ -10,7 +10,7 @@ export const StyledMenuItem = styled(MenuItem)({
     width: '50px',
     height: '50px',
     borderRadius: '10px',
-    color: 'white',
+    color: 'grey',
     '&:hover': {
         color: theme.palette.secondary.main,
         backgroundColor: theme.palette.secondary.light,

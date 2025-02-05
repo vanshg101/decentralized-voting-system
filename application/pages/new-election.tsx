@@ -1,97 +1,166 @@
-import { Grid, ListItem, List, Box, TextField, Typography, ListItemText, Backdrop, CircularProgress, Slide } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
-import { StyledChildBox, StyledList, StyledListItem, StyledSubmitBtn, StyledSuccessBox, StyledTextField, StyledTypography } from '../styles/newElectionStyle'
-import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
-import { AuthorityContext } from '../context/AuthorityContext';
-import CancelIcon from '@mui/icons-material/Cancel';
+    import { Grid, Box, TextField, Typography, Slide, Backdrop, CircularProgress } from '@mui/material';
+    import React, { useContext, useState } from 'react';
+    import { AuthorityContext } from '../context/AuthorityContext';
+    import CancelIcon from '@mui/icons-material/Cancel';
+    import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 
+    function NewElection() {
+        const { isBallotInitialized, isBallotLoading, initializeBallot } = useContext(AuthorityContext);
+        const [electionState, setElectionState] = useState({
+            name: '',
+            startTime: null,
+            endTime: null,
+        });
 
-function NewElection() {
-    const { isBallotInitialized, isBallotLoading, initializeBallot } = useContext(AuthorityContext)
-    const [backDropState, setBackDRopState] = useState(false);
-    const [electionState, steElectionState] = useState({
-        name: '',
-        startTime: null,
-        endTime: null
-    });
+        const handleNameChange = (e) => {
+            const { value, name } = e.target;
+            setElectionState({
+                ...electionState,
+                [name]: value
+            });
+        };
 
-    const handleNameChange = (e) => {
-        const { value, name } = e.target;
-        steElectionState({
-            ...electionState,
-            [name]: value
-        })
+        const handleTimeChange = (e) => {
+            const { value, name } = e.target;
+            const dateValue = new Date(value);
+            setElectionState({
+                ...electionState,
+                [name]: dateValue.getTime(),
+            });
+        };
+
+        const handleOnSubmitBtn = () => {
+            initializeBallot(electionState);
+        };
+
+        return (
+            <>
+                <Grid sx={{ justifyContent: 'center', paddingTop: 8, paddingBottom: 8 }} container>
+                    <Grid item md={12}>
+                        <Typography sx={{ textAlign: 'center', fontWeight: 'bold', color: '#00000', paddingBottom: 10 }} variant='h5'>
+                            Initialize Ballot
+                        </Typography>
+                    </Grid>
+                    <Grid item container spacing={3} justifyContent="center">
+                        {/* Election Name Field */}
+                        <Grid item xs={12} sm={4}>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: 3,
+                                border: '1px solid #ddd',
+                                borderRadius: 8,
+                                boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                backgroundColor: '#fff',
+                            }}>
+                                <Typography sx={{ fontWeight: 'bold', color: '#333' }}>Election Name:</Typography>
+                                <TextField
+                                    value={electionState.name}
+                                    autoComplete='off'
+                                    name='name'
+                                    onChange={handleNameChange}
+                                    placeholder='Enter Election name'
+                                    type='text'
+                                    sx={{
+                                        borderRadius: 2,
+                                        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                        '& .MuiInputBase-root': { borderRadius: 2 }
+                                    }}
+                                />
+                            </Box>
+                        </Grid>
+
+                        {/* Start Time Field */}
+                        <Grid item xs={12} sm={4}>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: 3,
+                                border: '1px solid #ddd',
+                                borderRadius: 8,
+                                boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                backgroundColor: '#fff',
+                            }}>
+                                <Typography sx={{ fontWeight: 'bold', color: '#333' }}>Enter Election Start Date & Time</Typography>
+                                <TextField
+                                    name='startTime'
+                                    onChange={handleTimeChange}
+                                    type='datetime-local'
+                                    inputProps={{ min: new Date().toISOString().slice(0, 16) }}
+                                    sx={{
+                                        borderRadius: 2,
+                                        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                        '& .MuiInputBase-root': { borderRadius: 2 }
+                                    }}
+                                />
+                            </Box>
+                        </Grid>
+
+                        {/* End Time Field */}
+                        <Grid item xs={12} sm={4}>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                padding: 3,
+                                border: '1px solid #ddd',
+                                borderRadius: 8,
+                                boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                backgroundColor: '#fff',
+                            }}>
+                                <Typography sx={{ fontWeight: 'bold', color: '#333' }}>Enter Election End Date & Time</Typography>
+                                <TextField
+                                    name='endTime'
+                                    onChange={handleTimeChange}
+                                    type='datetime-local'
+                                    inputProps={{ min: new Date().toISOString().slice(0, 16) }}
+                                    sx={{
+                                        borderRadius: 2,
+                                        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                                        '& .MuiInputBase-root': { borderRadius: 2 }
+                                    }}
+                                />
+                            </Box>
+                        </Grid>
+                    </Grid>
+
+                    {/* Initialize Button */}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                        <button onClick={handleOnSubmitBtn} style={{
+                            backgroundColor: '#66BB6A',
+                            color: '#fff',
+                            padding: '10px 20px',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                        }}>
+                            Initialize
+                        </button>
+                    </Box>
+                </Grid>
+
+                {/* Success Message */}
+                <Slide direction="up" in={isBallotInitialized} mountOnEnter unmountOnExit>
+                    <Box sx={{
+                        backgroundColor: '#4CAF50',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        color: 'white',
+                    }}>
+                        <Typography>Successful</Typography>
+                        <CancelIcon sx={{ cursor: 'pointer' }} />
+                    </Box>
+                </Slide>
+
+                {/* Loading Spinner */}
+                <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isBallotLoading}>
+                    <CircularProgress sx={{ color: "#66BB6A" }} />
+                </Backdrop>
+            </>
+        );
     }
 
-    const handleTimeChange = (e) => {
-        const { value, name } = e.target;
-        const dateValue = new Date(value);
-        steElectionState({
-            ...electionState,
-            [name]: dateValue.getTime(),
-        })
-
-    }
-
-    const handleOnSubmitBtn = () => {
-        initializeBallot(electionState);
-    }
-
-
-    return (
-        <>
-            <Grid sx={{ justifyContent: 'space-around', paddingTop: 8 }} container>
-                <Grid item md={12}>
-                    <Typography sx={{ textAlign: 'center', fontWeight: 'bold', color: 'white', paddingBottom: 10 }} variant='h5'> Initialize Ballot</Typography>
-                </Grid>
-                <Grid item mx={6}>
-                    <StyledList>
-                        <StyledListItem sx={{ listStyle: 'none' }}><WarningAmberRoundedIcon sx={{ fontSize: 70, color: 'red' }} /><Typography variant='h4' sx={{ fontWeight: 'bold', color: 'red' }}>Be careful</Typography></StyledListItem>
-                        <StyledListItem>
-                            <ListItemText>Please be sure before Initialize Ballot</ListItemText>
-                        </StyledListItem>
-                        <StyledListItem>
-                            <ListItemText>You can&apos;t modify after confirmation.</ListItemText></StyledListItem>
-                        <StyledListItem>
-                            <ListItemText>Only authorized person have rights to Initialize Ballot.</ListItemText>
-                        </StyledListItem>
-                    </StyledList>
-                </Grid>
-                <Grid item mx={6}>
-                    <StyledChildBox>
-                        <StyledTypography>Election Name:</StyledTypography>
-                        <StyledTextField value={electionState.name} autoComplete='off' name='name' onChange={handleNameChange} placeholder='Enter Election name' type='text' />
-                    </StyledChildBox>
-                    <StyledChildBox>
-                        <StyledTypography>Enter Election start Date & Time</StyledTypography>
-                        <StyledTextField name='startTime' onChange={handleTimeChange} type='datetime-local' inputProps={{
-                            min: new Date().toISOString().slice(0, 16),
-                        }} />
-                    </StyledChildBox>
-                    <StyledChildBox>
-                        <StyledTypography>Enter Election end Date & Time</StyledTypography>
-                        <StyledTextField onChange={handleTimeChange} name='endTime' type='datetime-local' inputProps={{
-                            min: new Date().toISOString().slice(0, 16),
-                        }} />
-                    </StyledChildBox>
-                    <StyledSubmitBtn onClick={handleOnSubmitBtn}>Initialize</StyledSubmitBtn>
-                </Grid>
-            </Grid>
-
-
-            <Slide direction="up" in={isBallotInitialized} mountOnEnter unmountOnExit>
-                <StyledSuccessBox>
-                    <Typography color={'white'}>Successful</Typography>
-                    <CancelIcon sx={{ cursor: 'pointer' }} />
-                </StyledSuccessBox>
-            </Slide>
-
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isBallotLoading}>
-                <CircularProgress sx={{ color: "gray" }} />
-            </Backdrop>
-        </>
-    )
-}
-
-export default NewElection
+    export default NewElection;
